@@ -149,6 +149,37 @@ async function sendVendorBusinessStatusEmail(email, { subject, message }) {
   }
 }
 
+async function sendBookingConfirmationEmail({ email, bookingDetails }) {
+  const mailOptions = {
+    from: process.env.GMAIL_USER,
+    to: email,
+    subject: 'Successfull Booking Confirmation',
+    text: `Your booking has been successfully confirmed.\n\nBooking Details:\nBooking ID: ${bookingDetails.booking_id}\nTickets: ${bookingDetails.booking_ticket_count}\nPrice: ${bookingDetails.booking_price}\nStatus: ${bookingDetails.booking_status}\nEvent: ${bookingDetails.event_name}\nDate: ${bookingDetails.event_date}`,
+  };
+  try {
+    await transporter.sendMail(mailOptions);
+    logger.info(`Email sent to ${mailOptions.to}`);
+  } catch (error) {
+    logger.error(`Failed to send email to ${mailOptions.to}: ${error.message}`);
+    throw new Error('Error sending email.');
+  }
+}
+
+async function sendBookingCancelConfirmationEmail({ email, bookingDetails }) {
+  const mailOptions = {
+    from: process.env.GMAIL_USER,
+    to: email,
+    subject: 'Cancellation Confirmation for Booking',
+    text: `Your booking has been successfully cancelled.\n\nBooking Details:\nBooking ID: ${bookingDetails.booking_id}\nTickets: ${bookingDetails.booking_ticket_count}\nPrice: ${bookingDetails.booking_price}\nStatus: ${bookingDetails.booking_status}\nEvent: ${bookingDetails.event_name}\nDate: ${bookingDetails.event_date}`,
+  };
+  try {
+    await transporter.sendMail(mailOptions);
+    logger.info(`Email sent to ${mailOptions.to}`);
+  } catch (error) {
+    logger.error(`Failed to send email to ${mailOptions.to}: ${error.message}`);
+    throw new Error('Error sending email.');
+  }
+}
 
 module.exports = { 
   sendUserWelcomeEmail, 
@@ -158,5 +189,7 @@ module.exports = {
   sendVendorStatusEmail,
   sendVendorBusinessWelcomeEmail,
   sendVendorBusinessAdminAlertEmail,
-  sendVendorBusinessStatusEmail
+  sendVendorBusinessStatusEmail,
+  sendBookingConfirmationEmail,
+  sendBookingCancelConfirmationEmail
 };
