@@ -9,6 +9,7 @@ const {
   updateOrganizerStatusController, 
   getOrganizersController
 } = require('../controllers/organizer');
+const validateToken = require('../middlewares/validateToken');
 
 const router = express.Router();
 
@@ -98,9 +99,14 @@ router.post('/register', async (req, res) => {
   }
 });
 
-router.put('/update-status/:id', async (req, res) => {
+router.put('/update-status/:id', validateToken, async (req, res) => {
   try {
     // Validate request body
+
+    if (req.user.role !== 'ADMIN') {
+      return res.status(403).json({ error: 'Access forbidden: Admins only.' });
+    }
+
     const { error } = updateOrganizerStatusSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
@@ -164,8 +170,13 @@ router.put('/recover-pin', async (req, res) => {
 });
 
 // PUT: Update Organizer Profile
-router.put('/update-profile/:id', async (req, res) => {
+router.put('/update-profile/:id', validateToken, async (req, res) => {
   try {
+
+    if (req.user.role !== 'ORGANIZER') {
+      return res.status(403).json({ error: 'Access forbidden: Organizers only.' });
+    }
+    
     const { error } = updateOrganizerProfileSchema.validate(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 

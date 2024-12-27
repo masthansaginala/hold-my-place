@@ -1,7 +1,7 @@
 const express = require('express');
 const Joi = require('joi');
 const { registerUserController, userLoginController, recoverUserPasswordController, recoverUserPinController, updateUserProfileController } = require('../controllers/user');
-
+const validateToken = require('../middlewares/validateToken');
 const router = express.Router();
 
 // Validation schema
@@ -111,8 +111,13 @@ router.put('/recover-pin', async (req, res) => {
 });
 
 // PUT: Update User Profile
-router.put('/update-profile/:id', async (req, res) => {
+router.put('/update-profile/:id', validateToken, async (req, res) => {
   try {
+
+    if (req.user.role !== 'USER') {
+      return res.status(403).json({ error: 'Access forbidden: Users only.' });
+    }
+
     const { error } = updateUserProfileSchema.validate(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 

@@ -8,6 +8,8 @@ const {
   updateBookingCheckinController,
   updateBookingCertificateController 
 } = require('../controllers/booking');
+const validateToken = require('../middlewares/validateToken');
+
 
 const router = express.Router();
 
@@ -21,8 +23,13 @@ const createBookingSchema = Joi.object({
   booking_event_date: Joi.string().required(),
 });
 
-router.post('/book', async (req, res) => {
+router.post('/book', validateToken, async(req, res) => {
   try {
+
+    if (req.user.role !== 'USER') {
+      return res.status(403).json({ error: 'Access forbidden: Users only.' });
+    }
+
     const { error } = createBookingSchema.validate(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
@@ -33,8 +40,13 @@ router.post('/book', async (req, res) => {
   }
 });
 
-router.delete('/cancel/:id', async (req, res) => {
+router.delete('/cancel/:id', validateToken, async (req, res) => {
   try {
+
+    if (req.user.role !== 'USER') {
+      return res.status(403).json({ error: 'Access forbidden: Users only.' });
+    }
+
     const result = await deleteBookingController(req.params.id);
     res.status(200).json(result);
   } catch (err) {
@@ -51,10 +63,10 @@ router.get('/list', async (req, res) => {
   }
 });
 
-router.get('/download-bookings', downloadBookingsCSVController);
+router.get('/download-bookings', validateToken, downloadBookingsCSVController);
 
-router.put('/update-checkin', updateBookingCheckinController);
+router.put('/update-checkin',validateToken, updateBookingCheckinController);
 
-router.put('/update-certificate-url', updateBookingCertificateController);
+router.put('/update-certificate-url', validateToken, updateBookingCertificateController);
 
 module.exports = router;

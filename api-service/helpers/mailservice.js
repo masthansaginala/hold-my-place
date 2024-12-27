@@ -14,18 +14,18 @@ async function sendUserWelcomeEmail(to, pin) {
   const html = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4; border: 1px solid #ddd; border-radius: 10px;">
       <h1 style="color: #007bff;">Welcome to HoldMyPlace!</h1>
-      <p style="font-size: 18px; color: #555;">Your one-stop solution for seamless and hassle-free event management.</p>
+      <p style="font-size: 18px; color: #555;">Your one-stop solution for seamless and hassle-free event booking.</p>
       
       <div style="margin: 20px auto; padding: 15px; background-color: #fff; border-radius: 10px; border: 1px solid #ddd; display: inline-block; width: fit-content;">
         <h3 style="margin: 0; color: #007bff;">Your 6-Digit PIN</h3>
         <p style="font-size: 22px; font-weight: bold; margin: 5px 0; color: #333;">${pin}</p>
       </div>
       
-      <p style="font-size: 16px; color: #555;">Thank you for joining HoldMyPlace. We are thrilled to have you onboard to explore, create, and manage unforgettable events.</p>
+      <p style="font-size: 16px; color: #555;">Thank you for joining HoldMyPlace. We are thrilled to have you onboard to explore and attend unforgettable events.</p>
       
-      <img src="https://drive.google.com/file/d/1TGcOdfbfK7RmKNSPYXDChcvl9218zddg/view?usp=sharing" alt="Welcome to HoldMyPlace" style="width: 300px; height: auto; margin: 20px auto; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+      <img src="https://holdmyplaceimages.blob.core.windows.net/holdmyimage/6f094745-12e4-4575-908c-46d728a761a0-welcome-hmp.png" alt="Welcome to HoldMyPlace" style="width: 300px; height: auto; margin: 20px auto; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
       
-      <p style="font-size: 16px; color: #555; margin-top: 20px;">Explore event options, collaborate with organizers, vendors, and enjoy a smooth experience.</p>
+      <p style="font-size: 16px; color: #555; margin-top: 20px;">Explore Events, Enjoy seemless booking, and enjoy a smooth experience.</p>
       
       <a href="https://holdmyplace.com/login" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; font-size: 16px; border-radius: 5px;">Log in to Your Account</a>
       
@@ -55,6 +55,9 @@ async function sendOrganizerWelcomeEmail(to) {
   const subject = 'Welcome to HoldMyPlace - Your Account is Under Review!';
   const html = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4; border: 1px solid #ddd; border-radius: 10px;">
+    
+      <img src="https://holdmyplaceimages.blob.core.windows.net/holdmyimage/0b5071b7-dca8-4eab-966d-7eb8ec6f1bdc-welcome-org.png" alt="Welcome to HoldMyPlace" style="width: 300px; height: auto; margin: 20px auto; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+    
       <h1 style="color: #007bff;">Welcome to HoldMyPlace!</h1>
       <p style="font-size: 18px; color: #555;">Your one-stop platform for seamless event management.</p>
       
@@ -65,7 +68,7 @@ async function sendOrganizerWelcomeEmail(to) {
       
       <p style="font-size: 16px; color: #555;">Thank you for registering as an Organizer on HoldMyPlace. We are excited to have you onboard to create and manage events effortlessly.</p>
       
-      <img src="https://drive.google.com/file/d/1TGcOdfbfK7RmKNSPYXDChcvl9218zddg/view?usp=sharing" alt="Welcome to HoldMyPlace" style="width: 300px; height: auto; margin: 20px auto; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+
       
       <p style="font-size: 16px; color: #555; margin-top: 20px;">As an Organizer, you can access tools and services to ensure a hassle-free event experience for your attendees.</p>
       
@@ -96,11 +99,11 @@ async function sendOrganizerWelcomeEmail(to) {
 async function sendOrganizerStatusEmail(email, { subject, message }) {
   const html = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4; border: 1px solid #ddd; border-radius: 10px;">
+      <img src="https://holdmyplaceimages.blob.core.windows.net/holdmyimage/92654e52-f522-4649-9f82-7b139ae6a1e5-new-alert-hmp.png" alt="HoldMyPlace Alert" style="width: 300px; height: auto; margin: 20px auto; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+      
       <h1 style="color: #007bff;">${subject}</h1>
       <p style="font-size: 18px; color: #555;">${message}</p>
 
-      <img src="https://drive.google.com/file/d/1G9LTZXnzgzmGBa1bxR5QH1izZpMtOIKz/view?usp=sharing" alt="HoldMyPlace Alert" style="width: 300px; height: auto; margin: 20px auto; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-      
       <p style="font-size: 16px; color: #555; margin-top: 20px;">If you have any questions or need assistance, feel free to reach out to us at:</p>
       <a href="mailto:support@holdmyplace.com" style="font-size: 16px; color: #007bff; text-decoration: none;">support@holdmyplace.com</a>
       
@@ -128,6 +131,7 @@ async function sendOrganizerAdminAlertEmail({ email, phone, name }) {
   const subject = 'New Organizer Registration Alert';
   const html = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f4f4f4; border: 1px solid #ddd; border-radius: 10px;">
+      <img src="https://holdmyplaceimages.blob.core.windows.net/holdmyimage/0b5071b7-dca8-4eab-966d-7eb8ec6f1bdc-welcome-org.png" alt="Welcome to HoldMyPlace" style="width: 300px; height: auto; margin: 20px auto; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
       <h1 style="color: #007bff;">${subject}</h1>
       <p style="font-size: 18px; color: #555;">A new organizer has registered on HoldMyPlace.</p>
 
@@ -138,8 +142,6 @@ async function sendOrganizerAdminAlertEmail({ email, phone, name }) {
         <p style="font-size: 16px; color: #333; margin: 5px 0;"><strong>Phone:</strong> ${phone}</p>
       </div>
 
-      <img src="https://drive.google.com/file/d/1G9LTZXnzgzmGBa1bxR5QH1izZpMtOIKz/view?usp=sharing" alt="HoldMyPlace Alert" style="width: 300px; height: auto; margin-top: 20px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-      
       <p style="font-size: 16px; color: #555; margin-top: 20px;">Please review the organizer's details and take the necessary action in the admin panel.</p>
       
       <a href="https://holdmyplace-admin.com/review-organizers" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; font-size: 16px; border-radius: 5px;">Review Organizer</a>
@@ -169,7 +171,7 @@ async function sendOrganizerAdminAlertEmail({ email, phone, name }) {
 async function sendVendorWelcomeEmail(email) {
 
   const subject = 'Welcome to HoldMyPlace!';
-  const imageUrl = 'https://drive.google.com/file/d/1G9LTZXnzgzmGBa1bxR5QH1izZpMtOIKz/view?usp=sharing';
+  const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/458d16a3-8dee-4c16-8b90-39c7806d1067-welcome-vendor.png';
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
       <img src="${imageUrl}" alt="HoldMyPlace Alert" style="width: 150px; height: auto; margin-bottom: 20px;">
@@ -200,7 +202,7 @@ async function sendVendorWelcomeEmail(email) {
 async function sendVendorAdminAlertEmail({ email, phone, name }) {
 
   const subject = 'New Vendor Registration Alert';
-  const imageUrl = 'https://drive.google.com/file/d/1G9LTZXnzgzmGBa1bxR5QH1izZpMtOIKz/view?usp=sharing';
+  const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/458d16a3-8dee-4c16-8b90-39c7806d1067-welcome-vendor.png';
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
       <img src="${imageUrl}" alt="HoldMyPlace Alert" style="width: 150px; height: auto; margin-bottom: 20px;">
@@ -235,7 +237,7 @@ async function sendVendorAdminAlertEmail({ email, phone, name }) {
 
 async function sendVendorStatusEmail(email, { subject, message }) {
 
-  const imageUrl = 'https://drive.google.com/file/d/1G9LTZXnzgzmGBa1bxR5QH1izZpMtOIKz/view?usp=sharing';
+  const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/92654e52-f522-4649-9f82-7b139ae6a1e5-new-alert-hmp.png';
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
       <img src="${imageUrl}" alt="HoldMyPlace Alert" style="width: 150px; height: auto; margin-bottom: 20px;">
@@ -265,7 +267,7 @@ async function sendVendorStatusEmail(email, { subject, message }) {
 
 async function sendVendorBusinessWelcomeEmail({ email, businessName }) {
   const subject = 'Welcome to HoldMyPlace!';
-  const imageUrl = 'https://drive.google.com/file/d/1G9LTZXnzgzmGBa1bxR5QH1izZpMtOIKz/view?usp=sharing';
+  const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/9b517c73-808e-47f0-8a40-832710b8e64e-vndrbs.png';
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
       <img src="${imageUrl}" alt="HoldMyPlace Alert" style="width: 150px; height: auto; margin-bottom: 20px;">
@@ -296,7 +298,7 @@ async function sendVendorBusinessWelcomeEmail({ email, businessName }) {
 
 async function sendVendorBusinessAdminAlertEmail({ businessName, vendorName, vendorEmail, businessEmail }) {
   const subject = 'New Vendor Business Registration Alert';
-  const imageUrl = 'https://drive.google.com/file/d/1G9LTZXnzgzmGBa1bxR5QH1izZpMtOIKz/view?usp=sharing';
+  const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/9b517c73-808e-47f0-8a40-832710b8e64e-vndrbs.png';
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
       <img src="${imageUrl}" alt="HoldMyPlace Alert" style="width: 150px; height: auto; margin-bottom: 20px;">
@@ -333,7 +335,7 @@ async function sendVendorBusinessAdminAlertEmail({ businessName, vendorName, ven
 
 async function sendVendorBusinessStatusEmail(email, { subject, message }) {
   
-  const imageUrl = 'https://drive.google.com/file/d/1G9LTZXnzgzmGBa1bxR5QH1izZpMtOIKz/view?usp=sharing';
+  const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/92654e52-f522-4649-9f82-7b139ae6a1e5-new-alert-hmp.png';
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
       <img src="${imageUrl}" alt="HoldMyPlace Alert" style="width: 150px; height: auto; margin-bottom: 20px;">
@@ -362,9 +364,7 @@ async function sendVendorBusinessStatusEmail(email, { subject, message }) {
   }
 }
 
-async function sendBookingEmail({ email, subject, bookingDetails, message, highlightColor }) {
-  const imageUrl = 'https://drive.google.com/uc?id=1G9LTZXnzgzmGBa1bxR5QH1izZpMtOIKz';
-
+async function sendBookingEmail({ email, subject, bookingDetails, message, highlightColor, imageUrl }) {
   const html = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
         <img src="${imageUrl}" alt="HoldMyPlace Alert" style="width: 150px; height: auto; margin-bottom: 20px;">
@@ -406,7 +406,7 @@ async function sendBookingEmail({ email, subject, bookingDetails, message, highl
 
 async function sendPinUpdateEmail(email, pin, userType) {
   const subject = `${userType} PIN Update Notification - HoldMyPlace`;
-  const imageUrl = 'https://drive.google.com/file/d/1G9LTZXnzgzmGBa1bxR5QH1izZpMtOIKz/view?usp=sharing';
+  const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/92654e52-f522-4649-9f82-7b139ae6a1e5-new-alert-hmp.png';
 
   const html = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
@@ -460,7 +460,7 @@ async function sendEmail(to, subject, html) {
 
 async function sendSupportRequestCreationEmail(support) {
   const subject = 'Thank You for Contacting HoldMyPlace Support';
-  const imageUrl = 'https://drive.google.com/file/d/1swgbhB1gg0Pww8Amxg1cGFSKGl7WtdWb/view?usp=sharing';
+  const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/f5c73ff3-336b-4bef-b9ac-8fe3c366de62-thnkuo.png';
 
   const html = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
@@ -504,7 +504,7 @@ async function sendSupportRequestCreationEmail(support) {
 
 async function sendSupportRequestUpdateEmail(support_email, support_status, support_remarks) {
   const subject = 'Status Update for Your Support Request - HoldMyPlace';
-  const imageUrl = 'https://drive.google.com/file/d/1swgbhB1gg0Pww8Amxg1cGFSKGl7WtdWb/view?usp=sharing';
+  const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/1e527155-e91b-4650-b2a4-acfd6a75ead2-logo-hmp.png';
 
   const html = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
@@ -544,7 +544,7 @@ async function sendSupportRequestUpdateEmail(support_email, support_status, supp
 
 async function sendContactRequestCreationEmail(contact) {
   const subject = 'Thank You for Contacting HoldMyPlace';
-  const imageUrl = 'https://drive.google.com/file/d/1swgbhB1gg0Pww8Amxg1cGFSKGl7WtdWb/view?usp=sharing';
+  const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/f5c73ff3-336b-4bef-b9ac-8fe3c366de62-thnkuo.png';
 
   const html = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
@@ -587,7 +587,7 @@ async function sendContactRequestCreationEmail(contact) {
 
 async function sendContactRequestUpdateEmail(contact_email, contact_status, contact_remarks) {
   const subject = 'Update on Your Contact Request - HoldMyPlace';
-  const imageUrl = 'https://drive.google.com/file/d/1swgbhB1gg0Pww8Amxg1cGFSKGl7WtdWb/view?usp=sharing';
+  const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/1e527155-e91b-4650-b2a4-acfd6a75ead2-logo-hmp.png';
 
   const html = `
     <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">

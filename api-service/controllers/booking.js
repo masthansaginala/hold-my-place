@@ -61,8 +61,9 @@ async function bookEventController(data) {
       event_date: booking_event_date,
       event_time: event.event_days_type == 'single_day' ? event.event_time : event.event_timings
     };
+    const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/967c1c90-7087-474e-a329-68c9af627f91-booking.png';
 
-    await sendBookingEmail({ email, subject, bookingDetails, message, highlightColor });
+    await sendBookingEmail({ email, subject, bookingDetails, message, highlightColor, imageUrl });
 
     logger.info(`Booking created successfully: ${newBooking.booking_id}`);
     return { message: 'Booking created successfully.', booking: newBooking };
@@ -109,7 +110,9 @@ async function deleteBookingController(bookingId) {
         event_time: event.event_days_type == 'single_day' ? event.event_time : event.event_timings
       };
 
-      await sendBookingEmail({ email, subject, bookingDetails, message, highlightColor });
+      const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/6eefe3da-3476-499c-8253-a560a5aa7f97-cancel.png';
+
+      await sendBookingEmail({ email, subject, bookingDetails, message, highlightColor, imageUrl });
       
       logger.info(`Booking cancelled successfully: ${bookingId}`);
       return { message: 'Booking cancelled successfully.' };

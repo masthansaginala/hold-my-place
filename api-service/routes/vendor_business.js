@@ -2,6 +2,7 @@ const Joi = require('joi');
 const express = require('express');
 const { createVendorBusinessController, getVendorBusinessesController, updateVendorBusinessStatusController } = require('../controllers/vendor_business');
 const router = express.Router();
+const validateToken = require('../middlewares/validateToken');
 
 const createVendorBusinessSchema = Joi.object({
   vendor_id: Joi.number().required(),
@@ -58,6 +59,11 @@ router.get('/list', async (req, res) => {
 
 router.put('/update-status/:id', async (req, res) => {
   try {
+
+    if (req.user.role !== 'ADMIN') {
+      return res.status(403).json({ error: 'Access forbidden: Admins only.' });
+    }
+
     // Validate request body
     const { error } = updateVendorBusinessStatusSchema.validate(req.body);
     if (error) {

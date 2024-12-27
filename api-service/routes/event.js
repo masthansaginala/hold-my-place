@@ -7,6 +7,7 @@ const {
   getEventsController,
 } = require('../controllers/event');
 const router = express.Router();
+const validateToken = require('../middlewares/validateToken');
 
 const createEventSchema = Joi.object({
   organizer_id: Joi.number().required(),
@@ -75,8 +76,11 @@ const updateEventSchema = Joi.object({
   event_image_url_three: Joi.string().optional(),
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', validateToken, async (req, res) => {
   try {
+    if (req.user.role !== 'ORGANIZER') {
+      return res.status(403).json({ error: 'Access forbidden: Organizers only.' });
+    }
     const { error } = createEventSchema.validate(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
@@ -87,8 +91,11 @@ router.post('/register', async (req, res) => {
   }
 });
 
-router.put('/update-event/:id', async (req, res) => {
+router.put('/update-event/:id', validateToken, async (req, res) => {
   try {
+    if (req.user.role !== 'ORGANIZER') {
+      return res.status(403).json({ error: 'Access forbidden: Organizers only.' });
+    }
     const { error } = updateEventSchema.validate(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 
@@ -99,8 +106,11 @@ router.put('/update-event/:id', async (req, res) => {
   }
 });
 
-router.delete('/delete-event/:id', async (req, res) => {
+router.delete('/delete-event/:id', validateToken, async (req, res) => {
   try {
+    if (req.user.role !== 'ORGANIZER') {
+      return res.status(403).json({ error: 'Access forbidden: Organizers only.' });
+    }
     const result = await deleteEventController(req.params.id);
     res.status(200).json(result);
   } catch (err) {

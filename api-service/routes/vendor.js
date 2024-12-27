@@ -1,8 +1,7 @@
 const express = require('express');
 const Joi = require('joi');
-
 const { registerVendorController, getVendorsController, updateVendorStatusController, vendorLoginController, updateVendorProfileController, recoverVendorPasswordController, recoverVendorPinController } = require('../controllers/vendor');
-
+const validateToken = require('../middlewares/validateToken');
 const router = express.Router();
 
 const registerVendorSchema = Joi.object({
@@ -94,8 +93,13 @@ router.get('/list', async (req, res) => {
   }
 });
 
-router.put('/update-status/:id', async (req, res) => {
+router.put('/update-status/:id', validateToken, async (req, res) => {
   try {
+
+    if (req.user.role !== 'ADMIN') {
+      return res.status(403).json({ error: 'Access forbidden: ADMIN only.' });
+    }
+
     // Validate request body
     const { error } = updateVendorStatusSchema.validate(req.body);
     if (error) {
@@ -125,8 +129,13 @@ router.post('/login', async (req, res) => {
 });
 
 // PUT: Update Vendor Profile
-router.put('/update-profile/:id', async (req, res) => {
+router.put('/update-profile/:id', validateToken, async (req, res) => {
   try {
+
+    if (req.user.role !== 'VENDOR') {
+      return res.status(403).json({ error: 'Access forbidden: Vendors only.' });
+    }
+
     const { error } = updateVendorProfileSchema.validate(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
 

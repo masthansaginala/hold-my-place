@@ -37,7 +37,7 @@ async function addEventServiceController(req, res) {
       <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9;">
         <h1 style="color: #4caf50;">New Event Service Request</h1>
         <p>A new event service has been added to HoldMyPlace. You are part of this new event service. See details below:</p>
-        <img src="https://drive.google.com/file/d/1G9LTZXnzgzmGBa1bxR5QH1izZpMtOIKz/view?usp=sharing" alt="Alert Update" style="width: 150px; height: auto; margin-top: 10px;">
+        <img src="https://holdmyplaceimages.blob.core.windows.net/holdmyimage/e7d17036-f3a8-4bcf-9e6d-944416a95f42-newservcreq.png" alt="Alert Update" style="width: 150px; height: auto; margin-top: 10px;">
         <p style="margin-top: 20px;">Thank you for being part of HoldMyPlace.</p>
       </div>
     `;
@@ -135,7 +135,7 @@ async function updateOrganizerEventServiceConntroller(req, res) {
           <p>Organizer Update:</p>
           <p>Status: <strong>${event_service_status_organizer}</strong></p>
           <p>Remarks: <strong>${event_service_remarks_organizer}</strong></p>
-          <img src="https://drive.google.com/file/d/1G9LTZXnzgzmGBa1bxR5QH1izZpMtOIKz/view?usp=sharing" alt="Alert Update" style="width: 150px; height: auto; margin-top: 10px;">
+          <img src="https://holdmyplaceimages.blob.core.windows.net/holdmyimage/be6e3e2c-5ef7-49af-80f6-2e96ae83ba13-servststupd.png" alt="Alert Update" style="width: 150px; height: auto; margin-top: 10px;">
           <p style="margin-top: 20px;">Thank you for using HoldMyPlace.</p>
         </div>
       `;
@@ -202,7 +202,7 @@ async function updateVendorEventServiceConntroller(req, res) {
         <p>Vendor Status Updated:</p>
         <p>Status: <strong>${event_service_status_vendor}</strong></p>
         <p>Remarks: <strong>${event_service_remarks_vendor}</strong></p>
-        <img src="https://drive.google.com/file/d/1G9LTZXnzgzmGBa1bxR5QH1izZpMtOIKz/view?usp=sharing" alt="Alert Update" style="width: 150px; height: auto; margin-top: 10px;">
+        <img src="https://holdmyplaceimages.blob.core.windows.net/holdmyimage/be6e3e2c-5ef7-49af-80f6-2e96ae83ba13-servststupd.png" alt="Alert Update" style="width: 150px; height: auto; margin-top: 10px;">
         <p style="margin-top: 20px;">Thank you for using HoldMyPlace.</p>
       </div>
     `;
