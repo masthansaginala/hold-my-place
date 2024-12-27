@@ -1,6 +1,11 @@
 const { User } = require('../models');
 const bcrypt = require('bcryptjs');
-const { sendUserWelcomeEmail } = require('../helpers/mailservice');
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+const logger = require('../helpers/logger');
+const { sendUserWelcomeEmail, sendPinUpdateEmail } = require('../helpers/mailservice');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
 const generatePin = () => Math.floor(100000 + Math.random() * 900000); // Generates a 6-digit PIN
 
@@ -27,12 +32,12 @@ const registerUserController = async (req, res) => {
     // Check if the user already exists
     const existingUserEmail = await User.findOne({ where: { user_email } });
     if (existingUserEmail) {
-      return res.status(400).json({ message: 'Email already exists' });
+      return res.status(400).json({ error: 'Email already exists' });
     }
 
     const existingUserPhone = await User.findOne({ where: { user_phone_number } });
     if (existingUserPhone) {
-      return res.status(400).json({ message: 'Phone Number already exists' });
+      return res.status(400).json({ error: 'Phone Number already exists' });
     }
 
     // Encrypt password
@@ -69,8 +74,150 @@ const registerUserController = async (req, res) => {
     return res.status(201).json({ message: 'User registered successfully', user: { user_email: newUser.user_email} });
   } catch (error) {
     console.error(error.message);
-    return res.status(500).json({ message: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-module.exports = { registerUserController };
+async function userLoginController(data) {
+  try {
+    const { email, password, pin, role } = data;
+
+    // Check if the role is 'USER'
+    if (role !== 'USER') {
+      throw new Error('Invalid role. Only USER role is allowed.');
+    }
+
+    // Find user by email
+    const user = await User.findOne({ where: { user_email: email } });
+    if (!user) {
+      throw new Error('User not found.');
+    }
+
+    // Check if the pin matches
+    if (user.user_pin !== pin) {
+      throw new Error('Invalid PIN.');
+    }
+
+    // Check if the password matches
+    const isPasswordValid = await bcrypt.compare(password, user.user_password);
+    if (!isPasswordValid) {
+      throw new Error('Invalid password.');
+    }
+
+    // Generate JWT token valid for 48 hours
+    const token = jwt.sign(
+      {
+        user_id: user.user_id,
+        email: user.user_email,
+        role: user.user_role,
+      },
+      JWT_SECRET,
+      { expiresIn: '48h' }
+    );
+
+    logger.info(`User logged in successfully: ${user.user_email}`);
+    return {
+      message: 'Login successful.',
+      token,
+      user: {
+        user_id: user.user_id,
+        user_email: user.user_email,
+        user_role: user.user_role,
+      },
+    };
+  } catch (error) {
+    logger.error(`Login failed: ${error.message}`);
+    throw error;
+  }
+}
+
+async function recoverUserPasswordController(data) {
+  const { email, pin, new_password, role } = data;
+
+  // Check if role is USER
+  if (role !== 'USER') {
+    throw new Error('Invalid role. Only USER role is allowed.');
+  }
+
+  // Find user by email
+  const user = await User.findOne({ where: { user_email: email } });
+  if (!user) {
+    throw new Error('User not found.');
+  }
+
+  // Check if the pin matches
+  if (user.user_pin !== pin) {
+    throw new Error('Invalid PIN.');
+  }
+
+  // Encrypt new password
+  const hashedPassword = await bcrypt.hash(new_password, 10);
+
+  // Update password in DB
+  user.user_password = hashedPassword;
+  await user.save();
+
+  return { message: 'Password updated successfully.' };
+}
+
+async function recoverUserPinController(data) {
+  const { email, password, role } = data;
+
+  // Check if role is USER
+  if (role !== 'USER') {
+    throw new Error('Invalid role. Only USER role is allowed.');
+  }
+
+  // Find user by email
+  const user = await User.findOne({ where: { user_email: email } });
+  if (!user) {
+    throw new Error('User not found.');
+  }
+
+  // Check if the password matches
+  const isPasswordValid = await bcrypt.compare(password, user.user_password);
+  if (!isPasswordValid) {
+    throw new Error('Invalid password.');
+  }
+
+  // Generate new 6-digit PIN
+  const newPin = crypto.randomInt(100000, 999999).toString();
+
+  // Update PIN in DB
+  user.user_pin = newPin;
+  await user.save();
+
+  // Send PIN update email
+  const userType = "USER";
+  await sendPinUpdateEmail(email, newPin, userType);
+
+  return { message: 'New PIN sent to email.' };
+}
+
+async function updateUserProfileController(userId, data) {
+  // Prevent updating restricted fields
+  const restrictedFields = ['user_status', 'user_pin', 'user_email', 'user_role'];
+  for (const field of restrictedFields) {
+    if (data[field] !== undefined) {
+      throw new Error(`Cannot update field: ${field}`);
+    }
+  }
+
+  // Check if user exists
+  const user = await User.findByPk(userId);
+  if (!user) {
+    throw new Error('User not found.');
+  }
+
+  // If updating password, encrypt it
+  if (data.user_password) {
+    data.user_password = await bcrypt.hash(data.user_password, 10);
+  }
+
+  // Update user profile
+  await user.update(data);
+
+  return { message: 'User profile updated successfully.', user };
+}
+
+module.exports = { registerUserController, userLoginController, recoverUserPasswordController, recoverUserPinController, updateUserProfileController };

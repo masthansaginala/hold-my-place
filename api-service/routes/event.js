@@ -14,7 +14,7 @@ const createEventSchema = Joi.object({
   event_description: Joi.string().optional(),
   event_total_seats: Joi.number().required(),
   event_seats_left: Joi.number().required(),
-  event_days: Joi.string().required(),
+  event_days_type: Joi.string().required(),
   event_date: Joi.date().optional(),
   event_start_date: Joi.date().optional(),
   event_end_date: Joi.date().optional(),
@@ -48,7 +48,6 @@ const updateEventSchema = Joi.object({
   event_description: Joi.string().optional(),
   event_total_seats: Joi.number().optional(),
   event_seats_left: Joi.number().optional(),
-  event_days: Joi.string().optional(),
   event_date: Joi.date().optional(),
   event_start_date: Joi.date().optional(),
   event_end_date: Joi.date().optional(),
@@ -88,7 +87,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/update-event/:id', async (req, res) => {
   try {
     const { error } = updateEventSchema.validate(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
@@ -100,7 +99,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/delete-event/:id', async (req, res) => {
   try {
     const result = await deleteEventController(req.params.id);
     res.status(200).json(result);

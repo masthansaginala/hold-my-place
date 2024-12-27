@@ -1,6 +1,7 @@
 const express = require('express');
 const Joi = require('joi');
-const { registerVendorController, getVendorsController, updateVendorStatusController  } = require('../controllers/vendor');
+
+const { registerVendorController, getVendorsController, updateVendorStatusController, vendorLoginController, updateVendorProfileController, recoverVendorPasswordController, recoverVendorPinController } = require('../controllers/vendor');
 
 const router = express.Router();
 
@@ -33,6 +34,41 @@ const updateVendorStatusSchema = Joi.object({
   vendor_admin_remarks: Joi.string().optional()
 });
 
+const vendorLoginSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+  pin: Joi.string().required(),
+  role: Joi.string().valid('VENDOR').required(),
+});
+
+const updateVendorProfileSchema = Joi.object({
+  vendor_first_name: Joi.string().optional(),
+  vendor_last_name: Joi.string().optional(),
+  vendor_date_of_birth: Joi.date().optional(),
+  vendor_gender: Joi.string().optional(),
+  vendor_primary_phone_number: Joi.string().optional(),
+  vendor_address_line_one: Joi.string().optional(),
+  vendor_address_line_two: Joi.string().optional(),
+  vendor_city: Joi.string().optional(),
+  vendor_state: Joi.string().optional(),
+  vendor_country: Joi.string().optional(),
+  vendor_zipcode: Joi.string().optional(),
+  vendor_password: Joi.string().optional(),
+});
+
+const recoverVendorPasswordSchema = Joi.object({
+  email: Joi.string().email().required(),
+  pin: Joi.string().required(),
+  new_password: Joi.string().min(8).required(),
+  role: Joi.string().valid('VENDOR').required(),
+});
+
+const recoverVendorPinSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+  role: Joi.string().valid('VENDOR').required(),
+});
+
 router.post('/register', async (req, res) => {
   try {
     // Validate request body
@@ -58,7 +94,7 @@ router.get('/list', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/update-status/:id', async (req, res) => {
   try {
     // Validate request body
     const { error } = updateVendorStatusSchema.validate(req.body);
@@ -70,6 +106,64 @@ router.put('/:id', async (req, res) => {
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+// POST: Vendor login
+router.post('/login', async (req, res) => {
+  try {
+    // Validate request body
+    const { error } = vendorLoginSchema.validate(req.body);
+    if (error) return res.status(400).json({ error: error.details[0].message });
+
+    // Process login
+    const result = await vendorLoginController(req.body);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// PUT: Update Vendor Profile
+router.put('/update-profile/:id', async (req, res) => {
+  try {
+    const { error } = updateVendorProfileSchema.validate(req.body);
+    if (error) return res.status(400).json({ error: error.details[0].message });
+
+    const result = await updateVendorProfileController(req.params.id, req.body);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// PUT: Recover Password
+router.put('/recover-password', async (req, res) => {
+  try {
+    const { error } = recoverVendorPasswordSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const result = await recoverVendorPasswordController(req.body);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// PUT: Recover Pin
+router.put('/recover-pin', async (req, res) => {
+  try {
+    const { error } = recoverVendorPinSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
+
+    const result = await recoverVendorPinController(req.body);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 });
 

@@ -40,6 +40,10 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
+      booking_event_date: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
       booking_ticket_count: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -50,10 +54,14 @@ module.exports = {
       },
       booking_status: {
         type: Sequelize.STRING,
-        allowNull: false, // Possible values: 'pending', 'confirmed', 'cancelled', 'completed'
+        allowNull: false, 
       },
       booking_checkin: {
         type: Sequelize.STRING,
+        allowNull: true,
+      },
+      booking_event_certificate_image_url: {
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       created_at: {

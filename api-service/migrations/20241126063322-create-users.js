@@ -29,12 +29,10 @@ module.exports = {
       user_email: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       user_phone_number: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       user_address_line_one: {
         type: Sequelize.STRING,

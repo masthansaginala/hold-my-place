@@ -29,12 +29,10 @@ module.exports = {
       organizer_email: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       organizer_primary_phone_number: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       organizer_secondary_phone_number: {
         type: Sequelize.STRING,

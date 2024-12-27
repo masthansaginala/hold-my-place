@@ -33,12 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       user_email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
       user_phone_number: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
       user_address_line_one: {
         type: DataTypes.STRING,

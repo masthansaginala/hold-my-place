@@ -9,7 +9,7 @@ const myFormat = printf(({ level, message, label, timestamp }) => {
 // Create a logger
 const logger = createLogger({
   format: combine(
-    label({ label: 'BloodGuard' }),
+    label({ label: 'HOLDMYPLACE' }),
     timestamp(),
     myFormat
   ),

@@ -29,12 +29,10 @@ module.exports = {
       vendor_email: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       vendor_primary_phone_number: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       vendor_address_line_one: {
         type: Sequelize.STRING,

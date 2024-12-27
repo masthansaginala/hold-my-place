@@ -4,10 +4,6 @@ module.exports = (sequelize, DataTypes) => {
   class Vendor_Business extends Model {
     static associate(models) {
       // Associate with Vendor
-      Vendor_Business.belongsTo(models.Vendor, {
-        foreignKey: 'vendor_id',
-        as: 'vendor',
-      });
     }
   }
   Vendor_Business.init(
@@ -49,12 +45,10 @@ module.exports = (sequelize, DataTypes) => {
       vendor_business_email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
       vendor_business_primary_phone_number: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
       vendor_business_secondary_phone_number: {
         type: DataTypes.STRING,

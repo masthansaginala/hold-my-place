@@ -56,7 +56,7 @@ router.get('/list', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/update-status/:id', async (req, res) => {
   try {
     // Validate request body
     const { error } = updateVendorBusinessStatusSchema.validate(req.body);

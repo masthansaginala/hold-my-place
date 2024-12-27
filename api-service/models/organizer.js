@@ -33,12 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       organizer_email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
       organizer_primary_phone_number: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
       organizer_secondary_phone_number: {
         type: DataTypes.STRING,

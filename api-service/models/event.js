@@ -38,12 +38,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      event_days: {
+      event_days_type: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       event_date: {
         type: DataTypes.DATE,
+        allowNull: true,
+      },
+      event_time: {
+        type: DataTypes.STRING,
         allowNull: true,
       },
       event_start_date: {
@@ -55,10 +59,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       event_timings: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      event_time: {
         type: DataTypes.STRING,
         allowNull: true,
       },

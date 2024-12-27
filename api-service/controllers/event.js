@@ -25,8 +25,8 @@ async function updateEventController(eventId, data) {
     if (!event) throw new Error('Event not found.');
 
     // Prevent updating restricted fields
-    if (data.event_name || data.event_category || data.event_type) {
-      throw new Error('Cannot update event_name, event_category, or event_type.');
+    if (data.event_name || data.event_category || data.event_type || data.event_days_type) {
+      throw new Error('Cannot update event_name, event_category, or event_type or event_days_type.');
     }
 
     await event.update(data);

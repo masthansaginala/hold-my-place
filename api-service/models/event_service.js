@@ -49,10 +49,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      event_service_status: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       event_service_status_vendor: {
         type: DataTypes.STRING,
         allowNull: true,

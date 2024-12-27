@@ -50,10 +50,6 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      event_service_status: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
       event_service_status_vendor: {
         type: Sequelize.STRING,
         allowNull: true,

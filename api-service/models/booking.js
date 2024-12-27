@@ -40,6 +40,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      booking_event_date: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
       booking_ticket_count: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -54,6 +58,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       booking_checkin: {
         type: DataTypes.STRING,
+        allowNull: true,
+      },
+      booking_event_certificate_image_url: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       created_at: {

@@ -2,7 +2,10 @@ const { Vendor } = require('../models');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const logger = require('../helpers/logger');
-const { sendVendorWelcomeEmail, sendVendorAdminAlertEmail, sendVendorStatusEmail } = require('../helpers/mailservice');
+const jwt = require('jsonwebtoken');
+const { sendVendorWelcomeEmail, sendVendorAdminAlertEmail, sendVendorStatusEmail, sendPinUpdateEmail } = require('../helpers/mailservice');
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 async function registerVendorController(data) {
   try {
@@ -135,4 +138,166 @@ async function updateVendorStatusController(vendorId, data) {
   }
 }
 
-module.exports = { registerVendorController, getVendorsController, updateVendorStatusController };
+async function vendorLoginController(data) {
+  try {
+    const { email, password, pin, role } = data;
+
+    // Check if the role is 'VENDOR'
+    if (role !== 'VENDOR') {
+      throw new Error('Invalid role. Only VENDOR role is allowed.');
+    }
+
+    // Find vendor by email
+    const vendor = await Vendor.findOne({ where: { vendor_email: email } });
+    if (!vendor) {
+      throw new Error('Vendor not found.');
+    }
+
+    // Check if the pin matches
+    if (vendor.vendor_pin !== pin) {
+      throw new Error('Invalid PIN.');
+    }
+
+    // Check if the password matches
+    const isPasswordValid = await bcrypt.compare(password, vendor.vendor_password);
+    if (!isPasswordValid) {
+      throw new Error('Invalid password.');
+    }
+
+    // Generate JWT token valid for 48 hours
+    const token = jwt.sign(
+      {
+        vendor_id: vendor.vendor_id,
+        email: vendor.vendor_email,
+        role: vendor.vendor_role,
+      },
+      JWT_SECRET,
+      { expiresIn: '48h' }
+    );
+
+    logger.info(`Vendor logged in successfully: ${vendor.vendor_email}`);
+    return {
+      message: 'Login successful.',
+      token,
+      vendor: {
+        vendor_id: vendor.vendor_id,
+        vendor_email: vendor.vendor_email,
+        vendor_role: vendor.vendor_role,
+      },
+    };
+  } catch (error) {
+    logger.error(`Login failed: ${error.message}`);
+    throw error;
+  }
+}
+
+async function updateVendorProfileController(vendorId, data) {
+  // Prevent updating restricted fields
+  const restrictedFields = [
+    'vendor_email',
+    'vendor_role',
+    'vendor_pin',
+    'vendor_status',
+    'vendor_admin_remarks',
+    'vendor_identification_number_type_one',
+    'vendor_identification_number_one',
+    'vendor_identification_proof_image_url_one',
+    'vendor_identification_number_type_two',
+    'vendor_identification_number_two',
+    'vendor_identification_proof_image_url_two',
+  ];
+  for (const field of restrictedFields) {
+    if (data[field] !== undefined) {
+      throw new Error(`Cannot update field: ${field}`);
+    }
+  }
+
+  // Check if vendor exists
+  const vendor = await Vendor.findByPk(vendorId);
+  if (!vendor) {
+    throw new Error('Vendor not found.');
+  }
+
+  // If updating password, encrypt it
+  if (data.vendor_password) {
+    data.vendor_password = await bcrypt.hash(data.vendor_password, 10);
+  }
+
+  // Update vendor profile
+  await vendor.update(data);
+
+  return { message: 'Vendor profile updated successfully.', vendor };
+}
+
+async function recoverVendorPasswordController(data) {
+  const { email, pin, new_password, role } = data;
+
+  // Ensure role is VENDOR
+  if (role !== 'VENDOR') {
+    throw new Error('Invalid role. Only VENDOR role is allowed.');
+  }
+
+  // Find vendor by email
+  const vendor = await Vendor.findOne({ where: { vendor_email: email } });
+  if (!vendor) {
+    throw new Error('Vendor not found.');
+  }
+
+  // Check if the pin matches
+  if (vendor.vendor_pin !== pin) {
+    throw new Error('Invalid PIN.');
+  }
+
+  // Encrypt the new password
+  const hashedPassword = await bcrypt.hash(new_password, 10);
+
+  // Update password in the database
+  vendor.vendor_password = hashedPassword;
+  await vendor.save();
+
+  return { message: 'Password updated successfully.' };
+}
+  
+async function recoverVendorPinController(data) {
+  const { email, password, role } = data;
+
+  // Ensure role is VENDOR
+  if (role !== 'VENDOR') {
+    throw new Error('Invalid role. Only VENDOR role is allowed.');
+  }
+
+  // Find vendor by email
+  const vendor = await Vendor.findOne({ where: { vendor_email: email } });
+  if (!vendor) {
+    throw new Error('Vendor not found.');
+  }
+
+  // Validate password
+  const isPasswordValid = await bcrypt.compare(password, vendor.vendor_password);
+  if (!isPasswordValid) {
+    throw new Error('Invalid password.');
+  }
+
+  // Generate new 6-digit PIN
+  const newPin = crypto.randomInt(100000, 999999).toString();
+
+  // Update PIN in the database
+  vendor.vendor_pin = newPin;
+  await vendor.save();
+
+  // Send the new PIN via email
+  const userType = "VENDOR"
+  await sendPinUpdateEmail(email, newPin, userType);
+
+  return { message: 'New PIN sent to email.' };
+}
+
+module.exports = { 
+  registerVendorController,
+  getVendorsController,
+  updateVendorStatusController, 
+  vendorLoginController,
+  updateVendorProfileController,
+  recoverVendorPasswordController,
+  recoverVendorPinController
+};
