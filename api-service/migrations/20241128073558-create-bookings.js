@@ -41,7 +41,7 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       booking_event_date: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         allowNull: true,
       },
       booking_ticket_count: {

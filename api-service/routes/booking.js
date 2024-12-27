@@ -18,7 +18,7 @@ const createBookingSchema = Joi.object({
   booking_ticket_count: Joi.number().min(1).required(),
   booking_price: Joi.number().required(),
   user_email: Joi.string().email().required(),
-  booking_event_date: Joi.date().required(),
+  booking_event_date: Joi.string().required(),
 });
 
 router.post('/book', async (req, res) => {

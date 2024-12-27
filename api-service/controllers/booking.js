@@ -170,6 +170,7 @@ async function downloadBookingsCSVController(req, res) {
       where: {
         organizer_id,
         event_id,
+        booking_event_date,
         deleted_at: null, // Ensure soft-deleted records are excluded
       },
       include: [
@@ -235,7 +236,7 @@ async function downloadBookingsCSVController(req, res) {
       booking_ticket_count: booking.booking_ticket_count,
       booking_price: booking.booking_price,
       booking_status: booking.booking_status,
-      booking_event_date: moment(booking.booking_event_date).format('YYYY-MM-DD'),
+      booking_event_date: booking.booking_event_date,
       booking_checkin: booking.booking_checkin,
     }));
   
