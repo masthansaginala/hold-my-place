@@ -1,4 +1,5 @@
 const { User } = require('../models');
+const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
@@ -220,4 +221,39 @@ async function updateUserProfileController(userId, data) {
   return { message: 'User profile updated successfully.', user };
 }
 
-module.exports = { registerUserController, userLoginController, recoverUserPasswordController, recoverUserPinController, updateUserProfileController };
+async function getUsers(req, res) {
+  try {
+    // Pagination parameters
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = parseInt(req.query.offset) || 0;
+
+    // Filter parameters
+    const { user_id, user_email } = req.query;
+
+    // Building the filters
+    const filters = {};
+    if (user_id) filters.user_id = user_id;
+    if (user_email) filters.user_email = { [Op.iLike]: `%${user_email}%` };
+
+    // Fetch users with pagination and filters
+    const { count, rows: users } = await User.findAndCountAll({
+      where: filters,
+      attributes: { exclude: ['user_password', 'user_pin'] },
+      limit,
+      offset,
+      order: [['created_at', 'DESC']], // Sort by latest created first
+    });
+
+    res.status(200).json({
+      total: count,
+      users: users,
+    });
+  } catch (error) {
+    console.error(`Error fetching users: ${error.message}`);
+    res.status(500).json({
+      error: 'Failed to fetch users',
+    });
+  }
+};
+
+module.exports = { registerUserController, userLoginController, recoverUserPasswordController, recoverUserPinController, updateUserProfileController, getUsers };

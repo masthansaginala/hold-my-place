@@ -1,6 +1,6 @@
 const express = require('express');
 const Joi = require('joi');
-const { registerUserController, userLoginController, recoverUserPasswordController, recoverUserPinController, updateUserProfileController } = require('../controllers/user');
+const { registerUserController, userLoginController, recoverUserPasswordController, recoverUserPinController, updateUserProfileController, getUsers } = require('../controllers/user');
 const validateToken = require('../middlewares/validateToken');
 const router = express.Router();
 
@@ -127,5 +127,7 @@ router.put('/update-profile/:id', validateToken, async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
+
+router.get('/list', getUsers);
 
 module.exports = router;
