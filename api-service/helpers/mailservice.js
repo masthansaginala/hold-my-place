@@ -472,6 +472,7 @@ async function sendSupportRequestCreationEmail(support) {
         </p>
         <div style="text-align: left; margin: 0 auto; max-width: 500px; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
             <h3 style="margin-bottom: 10px; color: #4caf50;">Request Details:</h3>
+            <p><strong>Ticket ID:</strong> ${support.support_id}</p>
             <p><strong>Name:</strong> ${support.support_name}</p>
             <p><strong>Email:</strong> ${support.support_email}</p>
             <p><strong>Phone:</strong> ${support.support_phone_number}</p>

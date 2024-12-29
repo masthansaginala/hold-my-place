@@ -29,7 +29,7 @@ async function createSupport(req, res) {
         // Create the support record
         const support = await models.Support.create(req.body);
 
-        await sendSupportRequestCreationEmail(req.body);
+        await sendSupportRequestCreationEmail(support);
 
         res.status(201).json({ message: 'Support ticket created successfully', support });
     } catch (err) {
