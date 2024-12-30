@@ -95,7 +95,7 @@ async function getOrganizersController(query) {
       offset: parseInt(offset, 10),
       limit: parseInt(limit, 10),
       attributes: {
-        exclude: ['organizer_password', 'organizer_pin', 'organizer_admin_remarks'],
+        exclude: ['organizer_password', 'organizer_pin'],
       },
     });
 
