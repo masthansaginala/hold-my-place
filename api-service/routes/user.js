@@ -18,7 +18,7 @@ const registerUserSchema = Joi.object({
   user_state: Joi.string().required(),
   user_country: Joi.string().required(),
   user_zipcode: Joi.string().required(),
-  user_role: Joi.string().required(),
+  user_role: Joi.string().valid('USER').required(),
   user_password: Joi.string().min(8).required(),
   user_status: Joi.string().required(),
 });

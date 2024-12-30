@@ -28,7 +28,7 @@ const registerOrganizerSchema = Joi.object({
   organizer_state: Joi.string().required(),
   organizer_country: Joi.string().required(),
   organizer_zipcode: Joi.string().required(),
-  organizer_role: Joi.string().required(),
+  organizer_role: Joi.string().valid('ORGANIZER').required(),
   organizer_password: Joi.string().min(8).required(),
   organizer_status: Joi.string().required(),
   organizer_identification_number_type_one: Joi.string().required(),

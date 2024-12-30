@@ -17,7 +17,7 @@ const registerVendorSchema = Joi.object({
     vendor_state: Joi.string().required(),
     vendor_country: Joi.string().required(),
     vendor_zipcode: Joi.string().required(),
-    vendor_role: Joi.string().required(),
+    vendor_role: Joi.string().valid('VENDOR').required(),
     vendor_password: Joi.string().min(8).required(),
     vendor_status: Joi.string().required(),
     vendor_identification_number_type_one: Joi.string().required(),
