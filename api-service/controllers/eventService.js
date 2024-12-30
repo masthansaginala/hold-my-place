@@ -86,7 +86,7 @@ async function getEventServicesController(req, res) {
         include: [
           { model: Organizer, as: 'organizer', attributes: ['organizer_email'] },
           { model: Vendor, as: 'vendor', attributes: ['vendor_email'] },
-          { model: Vendor_Business, as: 'vendorBusiness', attributes: ['vendor_business_email'] },
+          { model: Vendor_Business, as: 'vendorBusiness', attributes: ['vendor_business_email', 'vendor_business_name', 'vendor_business_primary_phone_number', 'vendor_business_service_category'] },
         ],
       });
   
