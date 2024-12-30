@@ -139,6 +139,17 @@ async function getBookingsController(query) {
       where: whereConditions,
       offset: parseInt(offset, 10),
       limit: parseInt(limit, 10),
+      include: [
+        {
+          model: Event,
+          as: 'event',
+          attributes: [
+            'event_name',
+            'event_type',
+            'event_category',
+          ],
+        },
+      ],
     });
 
     // Return the result
