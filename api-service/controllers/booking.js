@@ -6,6 +6,7 @@ const { createObjectCsvWriter } = require('csv-writer');
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
+const user = require('../models/user');
 
 // Validation schema
 const updateBookingCheckinSchema = Joi.object({
@@ -63,7 +64,12 @@ async function bookEventController(data) {
     };
     const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/967c1c90-7087-474e-a329-68c9af627f91-booking.png';
 
-    await sendBookingEmail({ email, subject, bookingDetails, message, highlightColor, imageUrl });
+    const user = await User.findOne({ where: { user_id: user_id } });
+    if (!user) {
+      throw new Error('User not found.');
+    }
+
+    await sendBookingEmail({ email: user.user_email, subject, bookingDetails, message, highlightColor, imageUrl });
 
     logger.info(`Booking created successfully: ${newBooking.booking_id}`);
     return { message: 'Booking created successfully.', booking: newBooking };
@@ -112,7 +118,15 @@ async function deleteBookingController(bookingId) {
 
       const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/6eefe3da-3476-499c-8253-a560a5aa7f97-cancel.png';
 
-      await sendBookingEmail({ email, subject, bookingDetails, message, highlightColor, imageUrl });
+
+
+      const user = await User.findOne({ where: { user_id: booking.user_id } });
+      if (!user) {
+        throw new Error('User not found.');
+      }
+  
+
+      await sendBookingEmail({ email: user.user_email, subject, bookingDetails, message, highlightColor, imageUrl });
       
       logger.info(`Booking cancelled successfully: ${bookingId}`);
       return { message: 'Booking cancelled successfully.' };
