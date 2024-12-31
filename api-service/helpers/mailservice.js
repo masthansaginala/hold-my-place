@@ -221,7 +221,7 @@ async function sendVendorAdminAlertEmail({ email, phone, name }) {
 
   const mailOptions = {
     from: process.env.GMAIL_USER,
-    to: email,
+    to: process.env.GMAIL_USER,
     subject,
     html: htmlContent,
   };
@@ -318,7 +318,7 @@ async function sendVendorBusinessAdminAlertEmail({ businessName, vendorName, ven
 
   const mailOptions = {
     from: process.env.GMAIL_USER,
-    to: email,
+    to: process.env.GMAIL_USER,
     subject,
     html: htmlContent,
   };
