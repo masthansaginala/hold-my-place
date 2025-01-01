@@ -38,17 +38,6 @@ const AdminVendorBusiness = () => {
   useEffect(() => {
     handleUsers();
   }, [activeStatus]);
-  // Handle search
-  const handleSearch = (e) => {
-    const value = e.target.value.toLowerCase();
-    setSearchText(value);
-    const filteredData = initialData.filter((item) =>
-      Object.values(item).some((field) =>
-        String(field).toLowerCase().includes(value)
-      )
-    );
-    setDataSource(filteredData);
-  };
 
   const showAttachments = (attachments) => {
     setSelectedAttachments(attachments);
