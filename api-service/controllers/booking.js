@@ -279,12 +279,25 @@ async function downloadBookingsCSVController(req, res) {
     await csvWriter.writeRecords(csvData);
   
     // Send the file for download
-    res.download(csvFilePath, csvFileName, (err) => {
+    // res.download(csvFilePath, csvFileName, (err) => {
+    //   if (err) {
+    //     console.error('Error downloading file:', err.message);
+    //     res.status(500).json({ error: 'Error downloading file.' });
+    //   }
+    // });
+
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="${csvFileName}"`
+    );
+    res.sendFile(csvFilePath, (err) => {
       if (err) {
         console.error('Error downloading file:', err.message);
         res.status(500).json({ error: 'Error downloading file.' });
       }
     });
+
   } catch (error) {
     console.error('Error in downloadBookingsCSV:', error.message);
     res.status(500).json({ error: 'Failed to generate CSV file.' });
