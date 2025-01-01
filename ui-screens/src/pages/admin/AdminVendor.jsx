@@ -12,7 +12,8 @@ import { toast } from "react-toastify";
 
 const AdminVendor = () => {
   const [activeStatus, setActiveStatus] = useState("");
-  const [dataSource, setDataSource] = useState([]);
+  const initialData = [];
+  const [dataSource, setDataSource] = useState(initialData);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAttachments, setSelectedAttachments] = useState([]);
 
