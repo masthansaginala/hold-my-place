@@ -336,7 +336,7 @@ async function updateBookingCertificateController(req, res) {
 
     // Find booking by ID
 
-    const booking = await Booking.findAll({
+    const booking = await Booking.findOne({
       where: {
         booking_id,
         deleted_at: null, // Ensure soft-deleted records are excluded
