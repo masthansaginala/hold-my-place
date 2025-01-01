@@ -219,7 +219,7 @@ function App() {
     },
     user_book_events: {
       message:
-        "To book an event, visit the event page, select your tickets, and complete the payment process.",
+        "To book an event, visit the event page, select your tickets, and complete the process.",
       options: ["Back to User Options"],
       chatDisabled: true,
       path: (params) => {
@@ -351,7 +351,7 @@ function App() {
     },
     faq_answer_how_to_book_event: {
       message:
-        "Browse available events, select the desired event, choose tickets, and complete the payment process.",
+        "Browse available events, select the desired event, choose tickets, and complete the process.",
       options: ["Back to Questions", "Back to User Options"],
       chatDisabled: true,
       path: (params) => {
@@ -544,8 +544,7 @@ function App() {
       path: (params) => {
         const faqPaths = {
           "How do I register as an Organizer?": "faq_organizer_register",
-          "What happens after registration?":
-            "faq_organizer_after_registration",
+          "What happens after registration?": "faq_organizer_after_registration",
           "How do I log in as an Organizer?": "faq_organizer_login",
           "Back to Organizer Help": "organizer_help",
         };
@@ -556,16 +555,28 @@ function App() {
       message:
         "To register, click 'Sign Up' on the homepage, select 'Organizer', and fill in the required details.",
       options: ["Back to Questions", "Back to Organizer Help"],
+      path: (params) => {
+        if (params.userInput === "Back to Questions") return "organizer_registeration";
+        if (params.userInput === "Back to Organizer Help") return "organizer_help";
+      },
     },
     faq_organizer_after_registration: {
       message:
         "After registration, your account will be verified by admin, and you will receive an activation email with your login PIN.",
       options: ["Back to Questions", "Back to Organizer Help"],
+      path: (params) => {
+        if (params.userInput === "Back to Questions") return "organizer_registeration";
+        if (params.userInput === "Back to Organizer Help") return "organizer_help";
+      },
     },
     faq_organizer_login: {
       message:
         "To log in, use your registered email, password, and the PIN provided during activation.",
       options: ["Back to Questions", "Back to Organizer Help"],
+      path: (params) => {
+        if (params.userInput === "Back to Questions") return "organizer_registeration";
+        if (params.userInput === "Back to Organizer Help") return "organizer_help";
+      },
     },
     creation_of_events: {
       message: "Here is the information on Event Creation:",
@@ -590,16 +601,28 @@ function App() {
       message:
         "To create an event, navigate to 'My Events', click 'Create Event', and fill in the event details.",
       options: ["Back to Questions", "Back to Organizer Help"],
+      path: (params) => {
+        if (params.userInput === "Back to Questions") return "creation_of_events";
+        if (params.userInput === "Back to Organizer Help") return "organizer_help";
+      },
     },
     faq_update_event: {
       message:
         "To update an event, select the event in 'My Events', make the changes, and save.",
       options: ["Back to Questions", "Back to Organizer Help"],
+      path: (params) => {
+        if (params.userInput === "Back to Questions") return "creation_of_events";
+        if (params.userInput === "Back to Organizer Help") return "organizer_help";
+      },
     },
     faq_delete_event: {
       message:
         "To delete an event, select the event in 'My Events' and click 'Delete Event'. Confirm your action to proceed.",
       options: ["Back to Questions", "Back to Organizer Help"],
+      path: (params) => {
+        if (params.userInput === "Back to Questions") return "creation_of_events";
+        if (params.userInput === "Back to Organizer Help") return "organizer_help";
+      },
     },
     addition_of_event_services: {
       message: "Here is the information on Adding Event Services:",
@@ -613,10 +636,8 @@ function App() {
       path: (params) => {
         const faqPaths = {
           "How do I add vendor services to my event?": "faq_add_vendor_service",
-          "Can I update the status of vendor services?":
-            "faq_update_vendor_status",
-          "Where can I view vendor service status updates?":
-            "faq_view_vendor_status",
+          "Can I update the status of vendor services?": "faq_update_vendor_status",
+          "Where can I view vendor service status updates?": "faq_view_vendor_status",
           "Back to Organizer Help": "organizer_help",
         };
         return faqPaths[params.userInput];
@@ -626,17 +647,29 @@ function App() {
       message:
         "To add vendor services, navigate to 'Event Services', select the event, and choose the required vendor services.",
       options: ["Back to Questions", "Back to Organizer Help"],
+      path: (params) => {
+        if (params.userInput === "Back to Questions") return "addition_of_event_services";
+        if (params.userInput === "Back to Organizer Help") return "organizer_help";
+      },
     },
     faq_update_vendor_status: {
       message:
         "To update vendor service status, go to 'Event Services', select the vendor service, and update the status or add remarks.",
       options: ["Back to Questions", "Back to Organizer Help"],
+      path: (params) => {
+        if (params.userInput === "Back to Questions") return "addition_of_event_services";
+        if (params.userInput === "Back to Organizer Help") return "organizer_help";
+      },
     },
     faq_view_vendor_status: {
       message:
         "Vendor service status updates can be viewed in the 'Event Services' section under each event.",
       options: ["Back to Questions", "Back to Organizer Help"],
-    },
+      path: (params) => {
+        if (params.userInput === "Back to Questions") return "addition_of_event_services";
+        if (params.userInput === "Back to Organizer Help") return "organizer_help";
+      },
+    },    
     organizer_faq_topics: {
       message: "Please choose a topic to find information:",
       options: [
