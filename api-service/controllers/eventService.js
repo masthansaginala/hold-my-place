@@ -108,8 +108,6 @@ async function updateOrganizerEventServiceConntroller(req, res) {
       if (!eventService) {
         return res.status(404).json({ error: 'Event service not found.' });
       }
-
-      if (event_service_status_organizer == '')
   
       // Update the event service fields
       Object.assign(eventService, {
