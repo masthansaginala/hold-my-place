@@ -160,6 +160,16 @@ async function getBookingsController(query) {
             'event_category',
           ],
         },
+        {
+          model: User,
+          as: 'user',
+          attributes: [
+            'user_first_name',
+            'user_last_name',
+            'user_email',
+            'user_phone_number'
+          ],
+        },
       ],
     });
 
