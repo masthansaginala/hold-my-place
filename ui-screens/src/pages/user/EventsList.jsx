@@ -119,23 +119,6 @@ function EventList({
 
             {/* Early Bird Offer */}
             <Row gutter={[16, 16]}>
-              {/* Event Date */}
-              <Col span={6}>
-                <label className="block text-sm font-medium text-gray-700">
-                  Event Date
-                </label>
-                <DatePicker
-                  className="w-full mt-1 h-12"
-                  value={
-                    filters?.event_date ? moment(filters?.event_date) : null
-                  }
-                  onChange={(date) =>
-                    handleChange(date?.format("YYYY-MM-DD"), "event_date")
-                  }
-                  placeholder="Select Event Date"
-                />
-              </Col>
-
               {/* Event City */}
               <Col span={6}>
                 <label className="block text-sm font-medium text-gray-700">
@@ -181,10 +164,8 @@ function EventList({
                   ]}
                 />
               </Col>
-            </Row>
-            <Row gutter={[16, 16]}>
-              {/* Event Food */}
-              <Col span={6}>
+                            {/* Event Food */}
+                            <Col span={6}>
                 <label className="block text-sm font-medium text-gray-700">
                   Event Food
                 </label>
@@ -193,44 +174,6 @@ function EventList({
                   value={filters?.event_food}
                   onChange={(value) => handleChange(value, "event_food")}
                   placeholder="Select Food Option"
-                  options={[
-                    { value: "Included", label: "Included" },
-                    { value: "Not Included", label: "Not Included" },
-                  ]}
-                />
-              </Col>
-
-              {/* Event Accommodation */}
-              <Col span={6}>
-                <label className="block text-sm font-medium text-gray-700">
-                  Event Accommodation
-                </label>
-                <Select
-                  className="w-full mt-1 h-12"
-                  value={filters?.event_accommodation}
-                  onChange={(value) =>
-                    handleChange(value, "event_accommodation")
-                  }
-                  placeholder="Select Accommodation Option"
-                  options={[
-                    { value: "Available", label: "Available" },
-                    { value: "Not Available", label: "Not Available" },
-                  ]}
-                />
-              </Col>
-
-              {/* Event Transportation */}
-              <Col span={6}>
-                <label className="block text-sm font-medium text-gray-700">
-                  Event Transportation
-                </label>
-                <Select
-                  className="w-full mt-1 h-12"
-                  value={filters?.event_transportation}
-                  onChange={(value) =>
-                    handleChange(value, "event_transportation")
-                  }
-                  placeholder="Select Transportation Option"
                   options={[
                     { value: "Included", label: "Included" },
                     { value: "Not Included", label: "Not Included" },
