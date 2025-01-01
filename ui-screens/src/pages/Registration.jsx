@@ -23,7 +23,7 @@ const FormRegistration = () => {
       let url = "/users/register";
       if (role === "Vendor") {
         url = "/vendors/register";
-        payload.vendor_role = "ORGANIZER";
+        payload.vendor_role = "VENDOR";
         payload.vendor_status = "NEW";
       } else if (role === "Organizer") {
         url = "/organizers/register";
