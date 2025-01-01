@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { Event } = require('../models');
 const logger = require('../helpers/logger');
 
@@ -61,7 +62,11 @@ async function getEventsController(query) {
     const whereConditions = { deleted_at: null };
 
     Object.keys(filters).forEach((key) => {
-      whereConditions[key] = filters[key];
+      if (key === "event_name" || key === "event_city") {
+        whereConditions[key] = { [Op.iLike]: `%${filters[key]}%` };
+      } else {
+        whereConditions[key] = filters[key];
+      }
     });
 
     const events = await Event.findAndCountAll({
