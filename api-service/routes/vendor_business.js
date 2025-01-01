@@ -57,7 +57,7 @@ router.get('/list', async (req, res) => {
   }
 });
 
-router.put('/update-status/:id', async (req, res) => {
+router.put('/update-status/:id', validateToken, async (req, res) => {
   try {
 
     if (req.user.role !== 'ADMIN') {
