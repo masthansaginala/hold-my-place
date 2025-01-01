@@ -1,7 +1,7 @@
 const { Booking, Event, User } = require('../models');
 const Joi = require('joi');
 const logger = require('../helpers/logger');
-const { sendBookingEmail } = require('../helpers/mailservice');
+const { sendBookingEmail, sendUsercertificateEmail } = require('../helpers/mailservice');
 const { createObjectCsvWriter } = require('csv-writer');
 const fs = require('fs');
 const path = require('path');
@@ -278,14 +278,6 @@ async function downloadBookingsCSVController(req, res) {
     // Write data to CSV
     await csvWriter.writeRecords(csvData);
   
-    // Send the file for download
-    // res.download(csvFilePath, csvFileName, (err) => {
-    //   if (err) {
-    //     console.error('Error downloading file:', err.message);
-    //     res.status(500).json({ error: 'Error downloading file.' });
-    //   }
-    // });
-
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader(
       'Content-Disposition',
@@ -343,7 +335,35 @@ async function updateBookingCertificateController(req, res) {
     const { booking_id, booking_event_certificate_image_url } = req.body;
 
     // Find booking by ID
-    const booking = await Booking.findOne({ where: { booking_id, deleted_at: null } });
+
+    const booking = await Booking.findAll({
+      where: {
+        booking_id,
+        deleted_at: null, // Ensure soft-deleted records are excluded
+      },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: [
+            'user_first_name',
+            'user_last_name',
+            'user_email',
+            'user_phone_number',
+            'user_gender',
+            'user_city',
+          ],
+        },
+        {
+          model: Event,
+          as: 'event',
+          attributes: [
+            'event_name'
+          ],
+        },
+      ]
+    });
+
     if (!booking) {
       return res.status(404).json({ error: 'Booking not found.' });
     }
@@ -351,6 +371,15 @@ async function updateBookingCertificateController(req, res) {
     // Update booking event certificate image URL
     booking.booking_event_certificate_image_url = booking_event_certificate_image_url;
     await booking.save();
+
+    const subject = `Wohoo ! Received certificate for ${booking.event.event_name} - HoldMyPlace`;
+    const message = `You have Received your Certificate for ${booking.event.event_name}`;
+    const highlightColor = '#d32f2f';
+    const imageUrl = booking_event_certificate_image_url;
+    const name = `Dear ${booking.user.user_first_name} ${booking.user.user_last_name}, `
+
+    await sendUsercertificateEmail({ email: booking.user.user_email, subject, message, highlightColor, imageUrl, name});
+
 
     res.status(200).json({ message: 'Booking event certificate image URL updated successfully.' });
   } catch (error) {
