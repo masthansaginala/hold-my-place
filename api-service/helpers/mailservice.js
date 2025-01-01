@@ -404,6 +404,36 @@ async function sendBookingEmail({ email, subject, bookingDetails, message, highl
   }
 }
 
+async function sendUsercertificateEmail({ email, subject, message, highlightColor, imageUrl, name }) {
+  const html = `
+    <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
+        <img src="${imageUrl}" alt="HoldMyPlace Alert" style="width: 150px; height: auto; margin-bottom: 20px;">
+        <h1 style="color: ${highlightColor};">${subject}</h1>
+        <p style="margin-bottom: 20px;">${name}</p>
+        <p style="margin-bottom: 20px;">${message}</p>
+        <p style="margin-top: 20px;">If you have any questions, feel free to reach out to our support team.</p>
+        <p style="margin-top: 20px; font-size: 14px; color: #555;">Warm regards,</p>
+        <p style="margin-top: 5px; font-size: 14px; color: #555;"><strong>The HoldMyPlace Team</strong></p>
+        <p style="margin-top: 20px; font-size: 12px; color: #888;">This is an automated email. Please do not reply to this message.</p>
+    </div>
+  `;
+
+  const mailOptions = {
+    from: process.env.GMAIL_USER,
+    to: email,
+    subject,
+    html,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    logger.info(`Booking email sent to ${email}`);
+  } catch (error) {
+    logger.error(`Failed to send booking email to ${email}: ${error.message}`);
+    throw new Error('Error sending email.');
+  }
+}
+
 async function sendPinUpdateEmail(email, pin, userType) {
   const subject = `${userType} PIN Update Notification - HoldMyPlace`;
   const imageUrl = 'https://holdmyplaceimages.blob.core.windows.net/holdmyimage/92654e52-f522-4649-9f82-7b139ae6a1e5-new-alert-hmp.png';
@@ -643,5 +673,6 @@ module.exports = {
   sendSupportRequestCreationEmail,
   sendSupportRequestUpdateEmail,
   sendOrganizerStatusEmail,
-  sendOrganizerAdminAlertEmail
+  sendOrganizerAdminAlertEmail,
+  sendUsercertificateEmail
 };
