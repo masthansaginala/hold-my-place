@@ -36,7 +36,9 @@ async function addEventServiceController(req, res) {
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9;">
         <h1 style="color: #4caf50;">New Event Service Request</h1>
-        <p>A new event service has been added to HoldMyPlace. You are part of this new event service. See details below:</p>
+        <p>A new event service has been Rquested. You are part of this new event service</p>
+        <p>Event Name : ${event.event_name}</p>
+        <p>Please Login to check the Request Details.</p>
         <img src="https://holdmyplaceimages.blob.core.windows.net/holdmyimage/e7d17036-f3a8-4bcf-9e6d-944416a95f42-newservcreq.png" alt="Alert Update" style="width: 150px; height: auto; margin-top: 10px;">
         <p style="margin-top: 20px;">Thank you for being part of HoldMyPlace.</p>
       </div>
